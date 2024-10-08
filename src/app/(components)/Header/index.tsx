@@ -13,7 +13,7 @@ const Header = () => {
       <div className="flex items-center gap-8">
         <div className="relative flex h-min">
           <div className="flex p-4 bg-gray-100"></div>
-          <Link href={"/my-list"} className="flex items-center px-4 py-2 mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 whitespace-nowrap ">
+          <Link href={"/cocktail/12"} className="flex items-center px-4 py-2 mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 whitespace-nowrap ">
             {!favorite.length ? <FavoriteBorderIcon className=" mr-2 cursor-pointer dark:text-white "></FavoriteBorderIcon>
               : <FavoriteIcon className="mr-2 cursor-pointer  dark:text-white"></FavoriteIcon>}
             <span>My-List</span>
