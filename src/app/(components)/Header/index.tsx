@@ -3,18 +3,22 @@ import Link from "next/link";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddIcon from '@mui/icons-material/Add';
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Header = () => {
-  const favorite = [];
+ 
+  const favorites = useSelector((state: RootState) => state.cocktails.favorites);
   return (
     <div className="flex items-center justify-between  px-4 py-3 bg-white dark:bg-black">
-      Logo
+      <Link href={"/"}>Logo</Link>
+      
 
       <div className="flex items-center gap-8">
         <div className="relative flex h-min">
           <div className="flex p-4 bg-gray-100"></div>
-          <Link href={"/cocktail/12"} className="flex items-center px-4 py-2 mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 whitespace-nowrap ">
-            {!favorite.length ? <FavoriteBorderIcon className=" mr-2 cursor-pointer dark:text-white "></FavoriteBorderIcon>
+          <Link href={"/favorites"} className="flex items-center px-4 py-2 mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 whitespace-nowrap ">
+            {!favorites.length ? <FavoriteBorderIcon className=" mr-2 cursor-pointer dark:text-white "></FavoriteBorderIcon>
               : <FavoriteIcon className="mr-2 cursor-pointer  dark:text-white"></FavoriteIcon>}
             <span>My-List</span>
           </Link>

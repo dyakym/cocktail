@@ -1,19 +1,37 @@
 'use client'
 
 import { FormControl, InputLabel, Input, Select, MenuItem } from "@mui/material";
-import React, { useState } from "react";
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import { FilterParams } from "../../../types/Filter"
+import React, { useState, useEffect } from "react";
+import { getCategories, getIngridients } from "../../../services/cocktailService";
 
 const Sidebar = () => {
-  const [choosenFilter, setChoosenFilter] = useState<FilterParams>("title")
-  const categories = ['alchol', 'non-alhol', 'with juice']
+  const [categories, setCategories] = useState<string[]>([]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categoriesData = await getCategories();
+      setCategories(categoriesData);
+      const ingredientsData = await getIngridients();
+      setIngredients(ingredientsData);
+    };
+    fetchCategories();
+  }, []);
+
+  const handleCategoryChange = (event: any) => {
+    setSelectedCategories(event.target.value);
+  };
+
+  const handleIngredientsChange = (event: any) => {
+    setSelectedIngredients(event.target.value);
+  };
+
   return <div className={`flex w-full flex-col gap-8 h-screen px-4 bg-gray-50 dark:bg-gray-600`}>
     <h3 className="mt-8 text-lg font-semibold">Search by</h3>
     <div className="flex flex-col gap-14">
       <div className="flex items-center gap-4">
-    {choosenFilter === "title" ? <RadioButtonCheckedIcon className="mt-8"></RadioButtonCheckedIcon> : <RadioButtonUncheckedIcon className="mt-8"></RadioButtonUncheckedIcon>}
     <FormControl>
         <InputLabel htmlFor="my-input">Title</InputLabel>
         <Input
@@ -25,37 +43,38 @@ const Sidebar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-    {choosenFilter === "categories" ? <RadioButtonCheckedIcon></RadioButtonCheckedIcon> : <RadioButtonUncheckedIcon></RadioButtonUncheckedIcon>}
     <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Categories</InputLabel>
         <Select
           multiple
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-           value={categories}
-          label="Category"
-          // onChange={handleChange}
+          value={selectedCategories}
+            label="Category"
+            onChange={handleCategoryChange}
+            renderValue={(selected) => selected.join(', ')}
         >
-          {categories.map(category => (
-            <MenuItem value={category}>{category}</MenuItem>
-          ))}
+          {categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
         </Select>
       </FormControl>
       </div>
     <div className="flex items-center gap-4">
-    {choosenFilter==="ingridients" ? <RadioButtonCheckedIcon></RadioButtonCheckedIcon> :  <RadioButtonUncheckedIcon></RadioButtonUncheckedIcon>}
     <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Ingridients</InputLabel>
         <Select
           multiple
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-           value={categories}
-          label="Category"
-          // onChange={handleChange}
+          value={selectedIngredients}
+          label="Ingredients"
+         onChange={handleIngredientsChange}
         >
-          {categories.map(category => (
-            <MenuItem value={category}>{category}</MenuItem>
+          {ingredients.map(ingredient => (
+            <MenuItem value={ingredient}>{ingredient}</MenuItem>
           ))}
         </Select>
       </FormControl>
